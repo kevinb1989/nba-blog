@@ -1,14 +1,15 @@
 @extends('template')
 
 @section('title')
-	Add a new article
+	Edit an article
 @stop
 
 @section('content')
-<h1>Create A New Article</h1>
+<h1>Edit: {{ $article -> title }}</h1>
 <hr/>
-	{!! Form::open(['action' => 'ArticlesController@store']) !!}
-		@include('articles.form', ['submitButtonText' => 'add new'])
+	{!! Form::model($article, ['method' => 'PATCH', 'action' => ['ArticlesController@update', $article -> id]]) !!}
+		@include('articles.form', ['submitButtonText' => 'update the article'])
+
 	{!! Form::close() !!}
 
 	@if($errors -> any())

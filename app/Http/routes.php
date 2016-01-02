@@ -15,8 +15,11 @@ Route::get('/', 'WelcomeController@index');
 Route::get('contact', 'WelcomeController@contact');
 Route::get('about', 'WelcomeController@about');
 
-Route::get('articles', 'ArticlesController@index');
-Route::get('articles/create', 'ArticlesController@create');
-Route::get('articles/{id}', 'ArticlesController@show');
-Route::post('articles', 'ArticlesController@store');
+Route::controllers([
+		'auth' => 'Auth\AuthController',
+		'password' => 'Auth\PasswordController'
+	]);
+
+Route::resource('articles', 'ArticlesController');
+
 

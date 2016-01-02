@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+//use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -31,6 +33,27 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
+    }
+
+    public function getRegister(){
+        return view('auth.register');
+    }
+
+    public function getLogin(){
+        return view('auth.login');
+    }
+
+    public function postLogin(Request $request){
+
+        $email = $request -> input('email');
+        $password = $request -> input('password');
+
+        if(Auth::attempt(['email' => $email, 'password' => $password])){
+            return Redirect('articles');
+        }else{
+            return 'your input does not match';
+        }
+
     }
 
     /**
