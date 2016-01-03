@@ -9,13 +9,14 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Article;
 use App\User;
+use App\Tag;
 
 use Carbon\Carbon;
 
 class ArticlesController extends Controller
 {
     public function index(){
-    	$articles = User::find(1) -> articles() -> latest() -> get(); 
+    	$articles = User::find(1) -> articles() -> latest('published_at') -> get();         
 
     	return view('articles.index', compact('articles'));
     }
@@ -27,12 +28,16 @@ class ArticlesController extends Controller
     }
 
     public function create(){
-    	return view('articles.create');
+        $tags = Tag::lists('name', 'id');
+    	return view('articles.create', compact('tags'));
     }
 
     public function store(ArticleRequest $request){
     	$input = $request -> all();
-        Article::create($input);
+
+        $article = Article::create($input);
+
+        $article->tags()->attach($request -> input('tag_list'));
 
         \Session::flash('flash_message','Your article has been added!');
 
@@ -41,13 +46,16 @@ class ArticlesController extends Controller
 
     public function edit($id){
         $article = Article::findOrFail($id);
+        $tags = Tag::lists('name', 'id');
 
-        return view('articles.edit', compact('article'));
+        return view('articles.edit', compact('article')) -> with('tags', $tags);
     }
 
     public function update($id, ArticleRequest $request){
         $article = Article::findOrFail($id);
         $article -> update($request -> all());
+
+        $article->tags()->sync($request -> input('tag_list'));
 
         return redirect('articles');
     }

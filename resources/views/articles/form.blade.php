@@ -14,5 +14,9 @@
 			{!! Form::input('date', 'published_at', null, ['class' => 'form-control']) !!}
 		</div>
 		<div class="form-group">
+			{!! Form::label('tag_list', 'Tags: ') !!}
+			{!! Form::select('tag_list[]', $tags, null, ['class' => 'form-control', 'Multiple']) !!}
+		</div>
+		<div class="form-group">
 			{!! Form::submit($submitButtonText, ['class' => 'btn btn-default']) !!}
 		</div>
