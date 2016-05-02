@@ -15,8 +15,21 @@
 		</div>
 		<div class="form-group">
 			{!! Form::label('tag_list', 'Tags: ') !!}
-			{!! Form::select('tag_list[]', $tags, null, ['class' => 'form-control', 'Multiple']) !!}
+			{!! Form::select('tag_list[]', $tags, null, ['id' => 'tag_list', 'class' => 'form-control', 'Multiple']) !!}
 		</div>
 		<div class="form-group">
 			{!! Form::submit($submitButtonText, ['class' => 'btn btn-default']) !!}
 		</div>
+
+@section('footer')
+	<script>
+		$('#tag_list').select2({
+			placeholder: 'choose a tag',
+			tags: true,
+			data: [
+				{id: 'detroit_pistons', text: 'Detroit Pistons'},
+				{id: 'washington_wizards', text: 'Washington Wizards'}
+			]
+		});
+	</script>
+@endsection
